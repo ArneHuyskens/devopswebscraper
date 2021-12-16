@@ -27,6 +27,7 @@ namespace WebDriverTest
                 {
                     if (keuze == "y" || keuze == "Y")
                     {
+                        youtube: 
                         Console.WriteLine("Wat wil je zoeken?:");
                         string ytZoekTerm = Console.ReadLine();
                         if (ytZoekTerm != null || ytZoekTerm != "")
@@ -63,27 +64,36 @@ namespace WebDriverTest
 
                             Thread.Sleep(5000);
 
-                            var i = 0;
-                            var titles = driver.FindElements(By.XPath("/html/body/ytd-app/div/ytd-page-manager/ytd-search/div[1]/ytd-two-column-search-results-renderer/div/ytd-section-list-renderer/div[2]/ytd-item-section-renderer/div[3]/ytd-video-renderer/div[1]/div/div[1]/div/h3/a/yt-formatted-string"));
-                            var weergaven = driver.FindElements(By.XPath("/html/body/ytd-app/div/ytd-page-manager/ytd-search/div[1]/ytd-two-column-search-results-renderer/div/ytd-section-list-renderer/div[2]/ytd-item-section-renderer/div[3]/ytd-video-renderer/div[1]/div/div[1]/ytd-video-meta-block/div[1]/div[2]/span[1]"));
-                            var uploaders = driver.FindElements(By.XPath("/html/body/ytd-app/div/ytd-page-manager/ytd-search/div[1]/ytd-two-column-search-results-renderer/div/ytd-section-list-renderer/div[2]/ytd-item-section-renderer/div[3]/ytd-video-renderer/div[1]/div/div[2]/ytd-channel-name/div/div/yt-formatted-string"));
-                            var links = driver.FindElements(By.XPath("/html/body/ytd-app/div/ytd-page-manager/ytd-search/div/ytd-two-column-search-results-renderer/div/ytd-section-list-renderer/div/ytd-item-section-renderer/div/ytd-video-renderer/div/div/div/div/h3/a"));
-                            while (i < 5)
+                            try
                             {
-                                csv.Append("\"" + titles[i].Text + "\"");
-                                csv.Append(";");
-                                csv.Append("\"" + weergaven[i].Text + "\"");
-                                csv.Append(";");
-                                csv.Append("\"" + uploaders[i].Text + "\"");
-                                csv.Append(";");
-                                csv.Append("\"" + links[i].GetDomProperty("href") + "\"");
-                                csv.Append("\n");
-                                i++;
+                                var titles = driver.FindElements(By.XPath("/html/body/ytd-app/div/ytd-page-manager/ytd-search/div[1]/ytd-two-column-search-results-renderer/div/ytd-section-list-renderer/div[2]/ytd-item-section-renderer/div[3]/ytd-video-renderer/div[1]/div/div[1]/div/h3/a/yt-formatted-string"));
+                                var weergaven = driver.FindElements(By.XPath("/html/body/ytd-app/div/ytd-page-manager/ytd-search/div[1]/ytd-two-column-search-results-renderer/div/ytd-section-list-renderer/div[2]/ytd-item-section-renderer/div[3]/ytd-video-renderer/div[1]/div/div[1]/ytd-video-meta-block/div[1]/div[2]/span[1]"));
+                                var uploaders = driver.FindElements(By.XPath("/html/body/ytd-app/div/ytd-page-manager/ytd-search/div[1]/ytd-two-column-search-results-renderer/div/ytd-section-list-renderer/div[2]/ytd-item-section-renderer/div[3]/ytd-video-renderer/div[1]/div/div[2]/ytd-channel-name/div/div/yt-formatted-string"));
+                                var links = driver.FindElements(By.XPath("/html/body/ytd-app/div/ytd-page-manager/ytd-search/div/ytd-two-column-search-results-renderer/div/ytd-section-list-renderer/div/ytd-item-section-renderer/div/ytd-video-renderer/div/div/div/div/h3/a"));
+                                var i = 0;
+
+                                while (i < 5)
+                                {
+                                    csv.Append("\"" + titles[i].Text + "\"");
+                                    csv.Append(";");
+                                    csv.Append("\"" + weergaven[i].Text + "\"");
+                                    csv.Append(";");
+                                    csv.Append("\"" + uploaders[i].Text + "\"");
+                                    csv.Append(";");
+                                    csv.Append("\"" + links[i].GetDomProperty("href") + "\"");
+                                    csv.Append("\n");
+                                    i++;
+                                }
+                                Console.WriteLine("De resultaten staan in de csv file! (Check je bureaublad!)");
+                                var filepath = (Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "/youtube.csv");
+                                File.AppendAllText(filepath, csv.ToString());
+                                goto kiezen;
+
+                            } catch
+                            {
+                                Console.WriteLine("Youtube kan deze zoekterm niet vinden, probeer een andere!");
+                                goto youtube;
                             }
-                            Console.WriteLine("De resultaten staan in de csv file! (Check je bureaublad!)");
-                            var filepath = (Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "/youtube.csv");
-                            File.AppendAllText(filepath, csv.ToString());
-                            goto kiezen;
                         }
                     }
                     else if (keuze == "i" || keuze == "I")
@@ -143,7 +153,13 @@ namespace WebDriverTest
                         Console.WriteLine("Welk product wil je zoeken?: ");
                         string ygoZoekTerm = Console.ReadLine();
                         driver.Navigate().GoToUrl("https://www.cardmarket.com/en/YuGiOh");
-                        driver.Manage().Window.Maximize();
+                        try
+                        {
+                            driver.Manage().Window.Maximize();
+                        } catch
+                        {
+                            Console.WriteLine("Window is already maximized");
+                        }
 
                         var input = driver.FindElement(By.XPath("/html/body/header/nav[2]/form/div/div/input[1]"));
                         input.Click();
