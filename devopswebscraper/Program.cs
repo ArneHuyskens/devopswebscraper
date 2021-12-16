@@ -33,7 +33,14 @@ namespace WebDriverTest
                         if (ytZoekTerm != null || ytZoekTerm != "")
                         {
                             driver.Navigate().GoToUrl("https://www.youtube.com");
-                            driver.Manage().Window.Maximize();
+                            try
+                            {
+                                driver.Manage().Window.Maximize();
+                            }
+                            catch
+                            {
+                                Console.WriteLine("Window is already maximized");
+                            }
 
                             try
                             {
@@ -101,7 +108,14 @@ namespace WebDriverTest
                         Console.WriteLine("Welke jobadvertenties wil je zien?:");
                         string indeedZoekTerm = Console.ReadLine();
                         driver.Navigate().GoToUrl("https://be.indeed.com/advanced_search?");
-                        driver.Manage().Window.Maximize();
+                        try
+                        {
+                            driver.Manage().Window.Maximize();
+                        }
+                        catch
+                        {
+                            Console.WriteLine("Window is already maximized");
+                        }
 
                         var optieDatum = driver.FindElement(By.XPath("/html/body/div[2]/form/fieldset[2]/div[3]/div/div[3]/select/option[2]"));
                         optieDatum.Click();
