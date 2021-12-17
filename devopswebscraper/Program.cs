@@ -14,7 +14,6 @@ namespace WebDriverTest
             using (var driver = new ChromeDriver())
             {
                 string keuze;
-                var csv = new StringBuilder();
             kiezen:
                 Console.WriteLine("Welke site wil je scrapen?");
                 Console.WriteLine("Youtube = y");
@@ -27,7 +26,8 @@ namespace WebDriverTest
                 {
                     if (keuze == "y" || keuze == "Y")
                     {
-                        youtube: 
+                        youtube:
+                        var csv = new StringBuilder();
                         Console.WriteLine("Wat wil je zoeken?:");
                         string ytZoekTerm = Console.ReadLine();
                         if (ytZoekTerm != null || ytZoekTerm != "")
@@ -105,6 +105,7 @@ namespace WebDriverTest
                     }
                     else if (keuze == "i" || keuze == "I")
                     {
+                        var csv = new StringBuilder();
                         Console.WriteLine("Welke jobadvertenties wil je zien?:");
                         string indeedZoekTerm = Console.ReadLine();
                         driver.Navigate().GoToUrl("https://be.indeed.com/advanced_search?");
@@ -164,6 +165,7 @@ namespace WebDriverTest
                     }
                     else if (keuze == "m" || keuze == "M")
                     {
+                        var csv = new StringBuilder();
                         Console.WriteLine("Welk product wil je zoeken?: ");
                         string ygoZoekTerm = Console.ReadLine();
                         driver.Navigate().GoToUrl("https://www.cardmarket.com/en/YuGiOh");
